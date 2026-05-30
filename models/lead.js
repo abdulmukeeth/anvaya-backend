@@ -45,13 +45,12 @@ const leadSchema = new mongoose.Schema({
   },
 });
 
-// FIX: was missing next() — would cause requests to hang
-leadSchema.pre("save", function (next) {
+leadSchema.pre("save", function () {
   this.updatedAt = Date.now();
+
   if (this.status === "Closed" && !this.closedAt) {
     this.closedAt = Date.now();
   }
-  next();
 });
 
 module.exports = mongoose.model("Lead", leadSchema);

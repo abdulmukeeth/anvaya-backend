@@ -44,8 +44,14 @@ exports.updateLead = async (req, res) => {
   try {
     const body = { ...req.body };
 
-    // Auto-set closedAt when status changes to Closed
-    if (body.status === "Closed") {
+    // Fetch existing lead first to check if closedAt is already set
+    const existing = await Lead.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: "Lead with ID '" + req.params.id + "' not found." });
+    }
+
+    // Only stamp closedAt the FIRST time status becomes Closed
+    if (body.status === "Closed" && !existing.closedAt) {
       body.closedAt = new Date();
     }
 
@@ -54,10 +60,6 @@ exports.updateLead = async (req, res) => {
       { ...body, updatedAt: new Date() },
       { new: true, runValidators: true }
     ).populate("salesAgent");
-
-    if (!updatedLead) {
-      return res.status(404).json({ error: "Lead with ID '" + req.params.id + "' not found." });
-    }
 
     res.json(updatedLead);
   } catch (err) {

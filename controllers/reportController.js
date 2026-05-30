@@ -57,7 +57,7 @@ exports.getClosedByAgent = async (req, res) => {
           as: "agent",
         },
       },
-      { $unwind: { path: "$agent", preserveNullAndEmpty: true } },
+      { $unwind: { path: "$agent", preserveNullAndEmptyArrays: true } },
       {
         $project: {
           agentName: { $ifNull: ["$agent.name", "Unknown"] },
