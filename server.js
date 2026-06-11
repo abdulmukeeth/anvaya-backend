@@ -1,4 +1,3 @@
-// anvaya-backend/server.js
 const { initializeDatabase } = require("./db/db.connect");
 const express = require("express");
 const app = express();

@@ -43,7 +43,10 @@ exports.getLeadById = async (req, res) => {
 exports.updateLead = async (req, res) => {
   try {
     const body = { ...req.body };
-
+    
+    if (body.salesAgent === "" || body.salesAgent === null) {
+      delete body.salesAgent;
+    }
     // Fetch existing lead first to check if closedAt is already set
     const existing = await Lead.findById(req.params.id);
     if (!existing) {
