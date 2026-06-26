@@ -6,6 +6,7 @@ const salesAgentSchema = new mongoose.Schema({
     required: [true, "Agent name is required"],
     trim: true,
     minlength: [2, "Agent name must be at least 2 characters"],
+    match: [/^[^0-9]+$/, "Agent name cannot contain numbers"],
   },
   email: {
     type: String,

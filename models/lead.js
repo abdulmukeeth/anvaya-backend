@@ -7,6 +7,7 @@ const leadSchema = new mongoose.Schema({
     required: [true, "Lead name is required"],
     trim: true,
     minlength: [2, "Lead name must be at least 2 characters"],
+    match: [/^[^0-9]+$/, "Lead name cannot contain numbers"],
   },
   source: {
     type: String,
